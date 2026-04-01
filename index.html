@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Secure Connection</title>
+
+<style>
+body {
+    background-color: black;
+    color: #00ff00;
+    font-family: monospace;
+    padding: 20px;
+}
+
+#terminal {
+    font-size: 18px;
+    line-height: 1.6;
+    white-space: pre-line;
+}
+
+.progress {
+    width: 100%;
+    background-color: #111;
+    border: 1px solid #00ff00;
+    margin: 10px 0;
+    display: none;
+}
+
+.bar {
+    width: 0%;
+    height: 18px;
+    background-color: #00ff00;
+}
+
+#final {
+    display: none;
+    text-align: center;
+    font-size: 30px;
+    color: red;
+    margin-top: 40px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="terminal"></div>
+
+<div class="progress"><div class="bar" id="bar1"></div></div>
+<div class="progress"><div class="bar" id="bar2"></div></div>
+<div class="progress"><div class="bar" id="bar3"></div></div>
+
+<div id="final">
+😂 APRIL FOOL! Your device is safe 😆
+</div>
+
+<script>
+const terminal = document.getElementById("terminal");
+
+const lines = [
+"> Initializing secure connection...",
+"> Connecting to device...",
+"> Bypassing firewall...",
+"> Access granted ✔",
+"> Scanning WhatsApp data..."
+];
+
+let i = 0;
+
+function typeLine(text, callback) {
+    let j = 0;
+    let line = "";
+    let interval = setInterval(() => {
+        line += text[j];
+        terminal.innerHTML += text[j];
+        j++;
+        if (j >= text.length) {
+            clearInterval(interval);
+            terminal.innerHTML += "\n";
+            setTimeout(callback, 500);
+        }
+    }, 30);
+}
+
+function startTyping() {
+    if (i < lines.length) {
+        typeLine(lines[i], () => {
+            i++;
+            startTyping();
+        });
+    } else {
+        showProgress();
+    }
+}
+
+function animateBar(id, speed, callback) {
+    let bar = document.getElementById(id);
+    let width = 0;
+    let parent = bar.parentElement;
+    parent.style.display = "block";
+
+    let interval = setInterval(() => {
+        if (width >= 100) {
+            clearInterval(interval);
+            if (callback) callback();
+        } else {
+            width++;
+            bar.style.width = width + "%";
+        }
+    }, speed);
+}
+
+function showProgress() {
+    terminal.innerHTML += "\n> Extracting messages...\n";
+    animateBar("bar1", 15, () => {
+        terminal.innerHTML += "> Downloading media...\n";
+        animateBar("bar2", 10, () => {
+            terminal.innerHTML += "> Finalizing access...\n";
+            animateBar("bar3", 8, () => {
+                setTimeout(() => {
+                    document.getElementById("terminal").style.display = "none";
+                    document.getElementById("final").style.display = "block";
+                }, 800);
+            });
+        });
+    });
+}
+
+startTyping();
+</script>
+
+</body>
+</html>
